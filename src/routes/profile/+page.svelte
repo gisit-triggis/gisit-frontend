@@ -3,6 +3,7 @@
 	import { goto } from '$app/navigation';
 	import { AuthService } from '../../services/auth/auth.service';
 	import type { IProfileResponse } from '../../interfaces/user';
+	import { userStore } from '../../stores/user.store';
 
 	let errorMessage = '';
 
@@ -13,7 +14,6 @@
 	// Локальные переменные для редактирования профиля
 	let editedName = '';
 	let editedSurname = '';
-	let editedEmail = '';
 
 	onMount(async () => {
 		try {
@@ -21,7 +21,6 @@
 			// Инициализируем поля редактирования данными из профиля
 			editedName = profile.data.name;
 			editedSurname = profile.data.surname;
-			editedEmail = profile.data.email;
 		} catch (error: any) {
 			console.error('Ошибка загрузки профиля:', error);
 			errorMessage = 'Не удалось загрузить профиль';
@@ -42,7 +41,13 @@
 			if (profile) {
 				profile.data.name = updatedProfile.data.name;
 				profile.data.surname = updatedProfile.data.surname;
+				// Добавляем пробел между именем и фамилией
+				profile.data.full_name = `${updatedProfile.data.name} ${updatedProfile.data.surname}`;
+				userStore.set(profile.data);
 			}
+			// Обновляем глобальный store, чтобы header и другие компоненты сразу получили изменения
+			// userStore.set(updatedProfile.data);
+
 			isEditing = false;
 		} catch (error: any) {
 			console.error('Ошибка обновления профиля:', error);

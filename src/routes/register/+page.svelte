@@ -18,11 +18,11 @@
 		}
 	});
 
-	async function handleLogin() {
+	async function handleRegister() {
 		errorMessage = '';
 		try {
 			// Выполняем логин (метод login сохраняет токен в cookie под ключом "sso")
-			await AuthService.login({ email, password });
+			await AuthService.register({ email, password });
 			// Получаем профиль и обновляем store
 			const profileResponse = await AuthService.getProfile();
 			userStore.set(profileResponse.data);
@@ -34,7 +34,7 @@
 	}
 </script>
 
-<form class="flex flex-col gap-3" on:submit|preventDefault={handleLogin}>
+<form class="flex flex-col gap-3" on:submit|preventDefault={handleRegister}>
 	<div class="text-2xl font-semibold">Registration</div>
 	<label>
 		Email:
