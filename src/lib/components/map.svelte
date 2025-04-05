@@ -8,11 +8,11 @@
 	} from 'svelte-maplibre-gl';
 	import { onMount } from 'svelte';
 
-	const center = { lng: 10.0, lat: 50.0 };
+	const center = { lng: 129.7, lat: 62.0 };
 	let zoom = 12;
 	let pitch = 70;
 	let maxPitch = 85;
-	const styleUrl = 'https://api.maptiler.com/maps/outdoor/style.json?key=r8lhIWYHOsXCted9dVIj';
+	const styleUrl = 'https://api.maptiler.com/maps/streets/style.json?key=r8lhIWYHOsXCted9dVIj';
 	const demTilesUrl = 'https://api.maptiler.com/tiles/terrain-rgb-v2/tiles.json?key=r8lhIWYHOsXCted9dVIj';
 	let exaggeration = 1.5;
 
