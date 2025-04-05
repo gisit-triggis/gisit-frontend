@@ -4,6 +4,7 @@
 	import { AuthService } from '../../services/auth/auth.service';
 	import type { IProfileResponse } from '../../interfaces/user';
 	import { userStore } from '../../stores/user.store';
+	import Button from '$lib/components/ui/button.svelte';
 
 	let errorMessage = '';
 
@@ -78,15 +79,15 @@
 				<input type="text" bind:value={editedSurname} />
 			</label>
 			<div class="mt-4 flex gap-2">
-				<button on:click={handleSave}>Сохранить</button>
-				<button on:click={handleCancel}>Отменить</button>
+				<Button onclick={handleSave}>Сохранить</Button>
+				<Button variant="secondary" onclick={handleCancel}>Отменить</Button>
 			</div>
 		</div>
 	{:else}
 		<p>Имя: {profile.data.name}</p>
 		<p>Фамилия: {profile.data.surname}</p>
 		<p>Email: {profile.data.email}</p>
-		<button on:click={() => (isEditing = true)}>Изменить</button>
+		<Button onclick={() => (isEditing = true)}>Изменить</Button>
 	{/if}
 {:else if errorMessage}
 	<p style="color: red">{errorMessage}</p>

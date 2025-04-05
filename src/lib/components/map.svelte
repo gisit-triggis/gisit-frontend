@@ -6,25 +6,39 @@
 		Terrain,
 		TerrainControl
 	} from 'svelte-maplibre-gl';
+	import { onMount } from 'svelte';
 
-	// Центр карты (например, используем координаты для примера)
 	const center = { lng: 10.0, lat: 50.0 };
-
-	// Параметры карты
 	let zoom = 12;
 	let pitch = 70;
 	let maxPitch = 85;
-
-	// URL стиля MapTiler (замените YOUR_API_KEY на свой ключ)
 	const styleUrl = 'https://api.maptiler.com/maps/outdoor/style.json?key=r8lhIWYHOsXCted9dVIj';
-
-	// URL для DEM (террейн-слоя) от MapTiler
-	const demTilesUrl =
-		'https://api.maptiler.com/tiles/terrain-rgb-v2/tiles.json?key=r8lhIWYHOsXCted9dVIj';
-
-	// Коэффициент увеличения рельефа (exaggeration)
+	const demTilesUrl = 'https://api.maptiler.com/tiles/terrain-rgb-v2/tiles.json?key=r8lhIWYHOsXCted9dVIj';
 	let exaggeration = 1.5;
+
+	onMount(async () => {
+		if ('permissions' in navigator && 'geolocation' in navigator) {
+			try {
+				const status = await navigator.permissions.query({ name: 'geolocation' as PermissionName });
+
+				// Если пользователь ещё не дал разрешение, запрашиваем его
+				if (status.state === 'prompt') {
+					navigator.geolocation.getCurrentPosition(
+						(pos) => {
+							console.log('Геолокация получена:', pos.coords);
+						},
+						(err) => {
+							console.warn('Ошибка получения геолокации:', err.message);
+						}
+					);
+				}
+			} catch (e) {
+				console.error('Ошибка при запросе разрешения на геолокацию:', e);
+			}
+		}
+	});
 </script>
+
 
 <MapLibre class="flex h-full w-full flex-1" style={styleUrl} {zoom} {pitch} {maxPitch} {center}>
 	<GeolocateControl />
